@@ -1,0 +1,10 @@
+database:
+   db_main:
+      type: MYSQL #Availables: [MYSQL, SQLITE]
+      #file: '$pluginDataFolder$/database.db' #uncomment this to use SQLITE type.
+      name: 'test' #don't remove it even if the type is SQLITE (Database Name)
+      address: 'localhost'
+      port: 3306
+      username: 'root'
+      password: ''
+      options: '?useUnicode=true&characterEncoding=utf8&autoreconnect=true' #url properties. see more at (https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-configuration-properties.html).
