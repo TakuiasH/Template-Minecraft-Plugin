@@ -19,14 +19,14 @@ public enum StorageType {
 		this.identifiers = (List<String>)ImmutableList.copyOf((String[])identifiers);
 	}
 	  
-	public static StorageType parse(String name, StorageType def) {
+	public static StorageType parse(String name) {
 		for (StorageType t : values()) {
 			for (String id : t.getIdentifiers()) {
 				if (id.equalsIgnoreCase(name))
 					return t; 
 			} 
 		} 
-		return def;
+		return null;
 	}
 	  
 	public String getName() {

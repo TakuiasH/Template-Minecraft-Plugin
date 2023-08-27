@@ -1,19 +1,34 @@
 package io.github.takuiash.template.core.utils.storage;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.UUID;
 
 public class Row {
 	
 	private final Map<String, Object> values;
 	
+	public Row() {
+		this.values = Collections.emptyMap();
+	}
+	
 	public Row(Map<String, Object> values) {
 		this.values = values;
 	}
 	
+	public Set<String> getColumns() {
+		return values.keySet();
+	}
+	
 	public Object get(String column) {
 		return values.get(column);
+	}
+	
+	public Row set(String column, Object value) {
+		this.values.put(column, value);
+		return this;
 	}
 	
 	public String getString(String column) {

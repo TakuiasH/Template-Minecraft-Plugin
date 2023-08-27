@@ -67,6 +67,7 @@ public class InventoryButton extends ItemStack {
 		return this;
 	}
 
+	@SuppressWarnings("deprecation")
 	public InventoryButton setOwner(String playerName) {
 		SkullMeta meta = (SkullMeta) getItemMeta();
 		meta.setOwner(playerName);

@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import com.google.common.reflect.ClassPath;
 
@@ -17,9 +16,9 @@ import io.github.takuiash.template.bukkit.utils.plugin.JavaPluginBase;
 
 public class CommandManager {
 	
-	private final JavaPlugin plugin;
+	private final JavaPluginBase plugin;
 	
-	public CommandManager(JavaPlugin plugin) {
+	public CommandManager(JavaPluginBase plugin) {
 		this.plugin = plugin;
 	}
 	
@@ -30,7 +29,12 @@ public class CommandManager {
 
 		for(Class<?> c : getAnnotatedClasses(packageName)) {
 			try {
-				JavaCommand command = ((JavaCommand) c.getConstructor().newInstance()).create(c.getAnnotation(Command.class));
+				
+				JavaCommand command = c.getConstructor(JavaPluginBase.class) == null ?
+								((JavaCommand) c.getConstructor().newInstance()).create(c.getAnnotation(Command.class)) :
+								((JavaCommand) c.getConstructor(JavaPluginBase.class).newInstance(plugin)).create(c.getAnnotation(Command.class));
+				
+				
 				PluginCommand pluginCommand = plugin.getCommand(command.getName());
 				
 				if(pluginCommand == null)
@@ -40,8 +44,10 @@ public class CommandManager {
 				pluginCommand.setTabCompleter(command);
 				
 				registeredCommands++;
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException  | SecurityException e) {
 				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[" + plugin.getName() + "] Command " + c.getName() + " class need an empty constructor.");
 			} catch (ClassCastException e) {
 				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[" + plugin.getName() + "] Command " + c.getName() + " is not a instance of JavaCommand.");
 			}

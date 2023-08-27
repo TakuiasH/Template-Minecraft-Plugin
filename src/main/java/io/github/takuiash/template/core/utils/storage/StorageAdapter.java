@@ -1,14 +1,8 @@
 package io.github.takuiash.template.core.utils.storage;
 
-public interface StorageAdapter<ID, ENTITY extends StorageEntity<ID>> {
-
-	boolean exists(ID primaryKey);
-	boolean exists(String fieldName, Object fieldValue);
+public interface StorageAdapter {
 	
-	StorageResponse find(ID primaryKey);
-	StorageResponse find(String fieldName, Object fieldValue);
+	void execute(String query, Object... arguments);
+	StorageResponse executeSelect(String query, Object... arguments);
 	
-	void delete(ID primaryKey);
-	
-	void save(StorageEntity<ID> entity);
 }

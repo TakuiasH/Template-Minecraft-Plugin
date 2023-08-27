@@ -8,7 +8,7 @@ public class TemplatePluginProvider {
 	  
 	public static TemplatePlugin get() {
 		if (pluginInstance == null)
-			throw new IllegalStateException("The RpgMob plugin hasn't finished starting up yet, or failed to load!"); 
+			throw new IllegalStateException("The plugin hasn't finished starting up yet, or failed to load!"); 
 		return pluginInstance;
 	}
   

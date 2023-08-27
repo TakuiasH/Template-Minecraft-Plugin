@@ -1,6 +1,6 @@
 name: TemplatePlugin
 version: 0.0.1-SNAPSHOT
-main: io.github.takuiash.template.bukkit.utils.plugin.JavaPluginBase
+main: io.github.takuiash.template.bukkit.TemplatePlugin
 api-version: 1.13
 softdepend: [ PlaceholderAPI ]
 commands:

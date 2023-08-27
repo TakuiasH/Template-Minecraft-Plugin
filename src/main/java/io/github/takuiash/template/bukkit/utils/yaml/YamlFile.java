@@ -40,8 +40,6 @@ public class YamlFile extends YamlConfiguration {
 			if(createIfNotExists && !file.exists()) {
 				file.getParentFile().mkdirs();
 				file.createNewFile();
-				
-				System.err.println("creating new file '" + file.getPath() + "'");
 			}
 			
 			if(file.exists())
@@ -113,6 +111,7 @@ public class YamlFile extends YamlConfiguration {
 	public void saveResource(Plugin plugin, String resourcePath, boolean replace) {
         resourcePath = resourcePath.replace('\\', '/');
         InputStream in = plugin.getResource(resourcePath);
+        
         if (in == null) {
             throw new IllegalArgumentException("The embedded resource '" + resourcePath + "' cannot be found in " + file);
         }

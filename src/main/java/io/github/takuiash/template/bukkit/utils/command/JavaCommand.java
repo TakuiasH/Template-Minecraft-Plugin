@@ -11,6 +11,8 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
+import io.github.takuiash.template.bukkit.utils.plugin.JavaPluginBase;
+
 public abstract class JavaCommand implements CommandExecutor, TabExecutor, Listener {
 	
 	private String name;
@@ -18,11 +20,11 @@ public abstract class JavaCommand implements CommandExecutor, TabExecutor, Liste
 	private String permissionMessage;
 	private SenderType senderType;
 	private String senderTypeMessage;
+	private JavaPluginBase plugin;
 	
-	public JavaCommand() {
-		
-	}
-	
+	public JavaCommand() {}
+	public JavaCommand(JavaPluginBase plugin) { this.plugin = plugin; }
+
 	protected JavaCommand create(io.github.takuiash.template.bukkit.utils.command.Command annotation) {
 		setName(annotation.name());
 		if(!annotation.permission().equalsIgnoreCase("null")) setPermission(annotation.permission());
@@ -30,6 +32,10 @@ public abstract class JavaCommand implements CommandExecutor, TabExecutor, Liste
 		setSenderType(annotation.senderType());
 		if(getSenderTypeMessage() == null) setSenderTypeMessage(ChatColor.RED + "Only the " + annotation.senderType().toString().toLowerCase() + " can use this command.");
 		return this;	
+	}
+	
+	public JavaPluginBase getPlugin() {
+		return plugin;
 	}
 
     /**

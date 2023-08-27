@@ -13,13 +13,14 @@ import java.util.List;
 import java.util.Map;
 
 import io.github.takuiash.template.core.utils.storage.Row;
+import io.github.takuiash.template.core.utils.storage.StorageAdapter;
 import io.github.takuiash.template.core.utils.storage.StorageResponse;
 
-public class SqlConnector {
+public class SqlConnector implements StorageAdapter {
 	
 	private SqlProvider provider;
 
-	private String sqliteFileName;
+	private File file;
 	private SqlCredentials credentials;
 	
 	private Connection connection;
@@ -28,16 +29,16 @@ public class SqlConnector {
 		this.provider = provider;
 		this.credentials = credentials;
 	}
-
-	public SqlConnector(String sqliteFileName) {
+	
+	public SqlConnector(File file) {
 		this.provider = SqlProvider.SQLITE;
-		this.sqliteFileName = sqliteFileName;
-		
-		final File file = new File(sqliteFileName);
-		
+		this.file = file;
+						
 		try { 
-			if(!file.exists())
+			if(!file.exists()) {
+				file.getParentFile().mkdirs();
 				file.createNewFile();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -51,7 +52,7 @@ public class SqlConnector {
 		try {
 			if(connection == null || connection.isClosed()) {
 				if(provider == SqlProvider.SQLITE)
-					connection = DriverManager.getConnection(provider.formatAddress(sqliteFileName));
+					connection = DriverManager.getConnection(provider.formatAddress(file.getAbsolutePath()));
 				else
 					connection = DriverManager.getConnection(
 							provider.formatAddress(credentials),
@@ -74,7 +75,7 @@ public class SqlConnector {
         }
 	}
 
-	public void executeQuery(String query, Object... arguments) {
+	public void execute(String query, Object... arguments) {
 		System.out.println(query);
 		try {
 			PreparedStatement st = getConnection().prepareStatement(query);

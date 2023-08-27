@@ -8,28 +8,21 @@ import io.github.takuiash.template.bukkit.utils.command.Arguments;
 import io.github.takuiash.template.bukkit.utils.command.Command;
 import io.github.takuiash.template.bukkit.utils.command.JavaCommand;
 import io.github.takuiash.template.bukkit.utils.command.SenderType;
+import io.github.takuiash.template.bukkit.utils.message.api.MessageManager;
+import io.github.takuiash.template.bukkit.utils.plugin.JavaPluginBase;
 
-@Command(name = "test", senderType = SenderType.PLAYER, permission = "template.test")
+@Command(name = "test", senderType = SenderType.ALL, permission = "template.test")
 public class TestCommand extends JavaCommand {
 
-	UserRepository userRepo = new UserRepository();
-	
-	@Override
-	public boolean perform(CommandSender sender, Arguments args) {
-		UserEntity entity = new UserEntity();
-		entity.setUsername("TakuiasH");
-		
-		userRepo.save(entity);
-		System.out.println(userRepo.find(entity.getId()));
-		
-		entity.setUsername("Vovozona");
-		userRepo.save(entity);
-		System.out.println(userRepo.find(entity.getId()));
+	public TestCommand(JavaPluginBase plugin) {
+		super(plugin);
+	}
 
+	public boolean perform(CommandSender sender, Arguments args) {
+		MessageManager.get().sendMessage("test.hello-world", sender);
 		return true;
 	}
 
-	@Override
 	public List<String> tabComplete(CommandSender sender, Arguments args) {
 		return null;
 	}
